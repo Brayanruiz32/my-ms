@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: products-db
+      MYSQL_USER: brayan
+      MYSQL_PASSWORD: brayan
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  mysql-prod:
+    image: mysql:latest
+    container_name: mysql-container-prod
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: products-db
+      MYSQL_USER: brayan-prod
+      MYSQL_PASSWORD: brayan-prod
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-prod-data:/var/lib/mysql
+
+  postgres:
+    image: postgres:16.1
+    container_name: postgres-container
+    restart: always
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'orders-db'
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  mysql-prod-data:
+  mysql-data:
+  pgdata:

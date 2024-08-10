@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    default: default
+  application:
+    name: ms-api-gateway
+  cloud:   
+    gateway:
+      routes:
+        - id: product-service
+          uri: http://localhost:8081
+          # uri: lb://ms-product
+          predicates:
+            - Path=/ms-product/product/**
+        - id: order-service
+          uri: http://localhost:8085
+          # uri: lb://ms-order
+          predicates:
+            - Path=/ms-order/order/**
+server:
+  port: 4040
+  
+eureka:
+  client:
+    fetchRegistry: true
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    instance-id: '${spring.application.name}:${random.value}'

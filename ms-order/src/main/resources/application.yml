@@ -1,0 +1,44 @@
+spring:
+  config:
+    import: 'optional:configserver:http://localhost:8888'
+  application:
+    name: ms-order
+  profiles:
+    default: default
+  jpa:
+    properties:
+      hibernate:
+        dialect: '${spring.dialect}'
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    username: '${spring.username}'
+    password: '${spring.password}'
+    url: '${spring.url}'
+server:
+  port: 8085
+  servlet:
+    context-path: /ms-order
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    instance-id: '${spring.application.name}:${random.value}'
+
+
+#configuraion del circuitbreaker
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 2
+        failureRateThreshold: 60
+        waitDurationInOpenState: 90s
+    instances:
+      globalCustomCB:
+        baseConfig: default
+  
+
+

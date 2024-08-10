@@ -1,0 +1,31 @@
+spring:
+  config:
+    import: 'optional:configserver:http://localhost:8888'
+  profiles:
+    default: default
+  application:
+    name: ms-product
+  jpa:
+    properties:
+      hibernate:
+        dialect: '${spring.dialect}'
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    username: '${spring.username}'
+    password: '${spring.password}'
+    url: '${spring.url}'
+    driver-class-name: '${spring.driver-class-name}'
+server:
+  servlet:
+    context-path: /ms-product
+  port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    instance-id: '${spring.application.name}:${random.value}'
+
+
