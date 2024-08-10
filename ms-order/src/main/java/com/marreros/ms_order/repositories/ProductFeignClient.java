@@ -12,7 +12,7 @@ import com.marreros.ms_order.models.Product;
 
 @FeignClient(name = "ms-product")
 @LoadBalancerClient(name = "ms-product", configuration = LoadBalancerConfiguration.class)
-public interface ProductClient {
+public interface ProductFeignClient {
 
     @GetMapping("/ms-product/product/{id}")
     Optional<Product> findById(@PathVariable Long id);

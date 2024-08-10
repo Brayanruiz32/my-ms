@@ -31,6 +31,14 @@ public class ProductController {
     
     @GetMapping("/{id}")
     public ResponseEntity<Product> findById(@PathVariable Long id){
+        try {
+            Thread.sleep(6000);
+            throw new RuntimeException("xd");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
     }
     

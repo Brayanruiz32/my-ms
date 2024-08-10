@@ -39,6 +39,13 @@ resilience4j:
     instances:
       globalCustomCB:
         baseConfig: default
-  
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+    instances:
+      globalCustomCB:
+        baseConfig: default
+
 
 
