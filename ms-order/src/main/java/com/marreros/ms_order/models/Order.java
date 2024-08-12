@@ -24,5 +24,12 @@ public class Order {
     private Long productoId;
     private String nombre;
     private int cantidad;
+    
+    @Override
+    public String toString() {
+        return "Order [id=" + id + ", productoId=" + productoId + ", nombre=" + nombre + ", cantidad=" + cantidad + "]";
+    }
+
+    
 
 }

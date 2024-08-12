@@ -16,6 +16,16 @@ spring:
     username: '${spring.username}'
     password: '${spring.password}'
     url: '${spring.url}'
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      function:
+        bindings:
+          orderListener-out-0:
+            destination: orderListener
+      
 server:
   port: 8085
   servlet:

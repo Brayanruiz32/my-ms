@@ -23,11 +23,13 @@ public class GatewayBeans {
                 .setFallbackUri("forward:/ms-product-fallback/product/*"));
                 return filter;
             })
-            .uri("lb://ms-product")
+            .uri("http://localhost:8081")
+            // .uri("lb://ms-product")
         )
         .route(route -> route
             .path("/ms-order/order/**")
-            .uri("lb://ms-order")
+            .uri("http://localhost:8085")
+            // .uri("lb://ms-order")
         )
         .route(route -> route
             .path("/ms-product-fallback/product/**")

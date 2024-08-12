@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
-import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder.Resilience4JCircuitBreakerConfiguration;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import com.marreros.ms_order.dto.OrderDTO;
@@ -32,6 +32,10 @@ public class OrderService {
     @Autowired
     private Resilience4JCircuitBreakerFactory circuitBreakerFactory;
 
+    @Autowired
+    private OrderPublisher orderPublisher;
+
+
 
     public List<Order> findAll() {     
         return orderRepository.findAll();
@@ -49,6 +53,8 @@ public class OrderService {
         );
     }
 
+
+
     public Order createMain(OrderDTO orderDTO){
         log.info("ingresando a consultar por el producto");
         Product product = productClient.findById(orderDTO.getIdProducto()).orElseThrow();
@@ -58,6 +64,8 @@ public class OrderService {
         .nombre(product.getNombre())
         .cantidad(orderDTO.getCantidad())
         .build();
+        log.info("enviando el mensaje mediante kafka desde order");
+        this.orderPublisher.sendMessage(newOrder);
 
         return orderRepository.save(newOrder);
     }
