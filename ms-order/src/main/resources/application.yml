@@ -23,8 +23,10 @@ spring:
           brokers: localhost:9092
       function:
         bindings:
-          orderListener-out-0:
+          orderPublisher-out-0:
             destination: orderListener
+          # orderListener-out-0:
+          #   destination: orderListener
       
 server:
   port: 8085

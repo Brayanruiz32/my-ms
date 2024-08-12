@@ -14,10 +14,12 @@ import com.marreros.ms_order.repositories.OrderRepository;
 import com.marreros.ms_order.repositories.ProductFeignClient;
 import com.marreros.ms_order.repositories.ProductWebClient;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class OrderService {
 
     @Autowired
@@ -32,7 +34,7 @@ public class OrderService {
     @Autowired
     private Resilience4JCircuitBreakerFactory circuitBreakerFactory;
 
-    @Autowired
+    
     private OrderPublisher orderPublisher;
 
 
@@ -59,15 +61,15 @@ public class OrderService {
         log.info("ingresando a consultar por el producto");
         Product product = productClient.findById(orderDTO.getIdProducto()).orElseThrow();
 
-        var newOrder = Order.builder()
+        var order = Order.builder()
         .productoId(product.getId())
         .nombre(product.getNombre())
         .cantidad(orderDTO.getCantidad())
         .build();
         log.info("enviando el mensaje mediante kafka desde order");
-        this.orderPublisher.sendMessage(newOrder);
+        this.orderPublisher.sendMessage(order.toString());
 
-        return orderRepository.save(newOrder);
+        return orderRepository.save(order);
     }
 
     public Order createFallback(OrderDTO orderDTO, Throwable error){

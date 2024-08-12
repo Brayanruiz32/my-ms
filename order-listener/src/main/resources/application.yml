@@ -10,8 +10,10 @@ spring:
           brokers: localhost:9092
       function:
         bindings:
-          orderListener-in-0:
+          consumerOrder-in-0:
             destination: orderListener
+          # orderListener-in-0:
+          #   destination: orderListener
   data:
     mongodb:
       authentication-database: admin
