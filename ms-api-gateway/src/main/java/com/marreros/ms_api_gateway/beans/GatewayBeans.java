@@ -7,8 +7,15 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.marreros.ms_api_gateway.filters.AuthFilter;
+
+import lombok.AllArgsConstructor;
+
 @Configuration
+@AllArgsConstructor
 public class GatewayBeans {
+
+    private final AuthFilter authFilter;
 
     @Bean
     public RouteLocator routeLocatorEurekaOnCB(RouteLocatorBuilder builder){
@@ -21,6 +28,7 @@ public class GatewayBeans {
                 .setName("gateway-cb")
                 .setStatusCodes(Set.of("500", "400"))
                 .setFallbackUri("forward:/ms-product-fallback/product/*"));
+                filter.filter(this.authFilter);
                 return filter;
             })
             .uri("http://localhost:8081")
@@ -28,12 +36,18 @@ public class GatewayBeans {
         )
         .route(route -> route
             .path("/ms-order/order/**")
+            .filters(filter -> filter.filter(this.authFilter))
             .uri("http://localhost:8085")
             // .uri("lb://ms-order")
         )
         .route(route -> route
             .path("/ms-product-fallback/product/**")
             .uri("lb://ms-product-fallback")
+        )
+        .route(route -> route
+            .path("/auth-server/auth/**")
+            .uri("http://localhost:3030")
+            // .uri("lb://ms-product-fallback")
         )
         .build();
     }
