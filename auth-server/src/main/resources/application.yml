@@ -5,6 +5,9 @@ spring:
     default: default
   application:
     name: auth-server
+  h2:
+    console:
+      enabled: true
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
@@ -14,14 +17,14 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    username: '${spring.username}'
-    password: '${spring.password}'
+    username: sa
+    password: sa
     url: jdbc:h2:mem:users
     driver-class-name: org.h2.Driver
 server:
   servlet:
     context-path: /auth-server
-  port: 3000
+  port: 3030
 eureka:
   client:
     service-url:
