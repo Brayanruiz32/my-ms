@@ -1,0 +1,32 @@
+spring:
+  config:
+    import: 'optional:configserver:http://localhost:8888'
+  profiles:
+    default: default
+  application:
+    name: auth-server
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        dialect: '${spring.dialect}'
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    username: '${spring.username}'
+    password: '${spring.password}'
+    url: jdbc:h2:mem:users
+    driver-class-name: org.h2.Driver
+server:
+  servlet:
+    context-path: /auth-server
+  port: 3000
+eureka:
+  client:
+    service-url:
+      defaultZone: 'http://localhost:8761/eureka'
+  instance:
+    instance-id: '${spring.application.name}:${random.value}'
+
+
